@@ -15,7 +15,10 @@ apt-get install -y genisoimage
 # B2D
 #--------------------------------------------------------------------
 # Download boot2docker
-wget -O b2d.iso ${B2D_URL}
+if [ ! -f b2d.iso ]
+then
+    wget -O b2d.iso ${B2D_URL}
+fi
 
 # Mount it up
 rm -rf /tmp/boot
@@ -58,7 +61,7 @@ echo "/etc/rc.d/vagrant" >> ${EXTRACT_DIR}/opt/bootsync.sh
 #--------------------------------------------------------------------
 # Make the initrd.img image...
 pushd ${EXTRACT_DIR}
-find | cpio -o -H newc | xz -9 --format=lzma > /tmp/initrd.img
+find | cpio -o -H newc | xz -7 --format=lzma --verbose > /tmp/initrd.img
 popd
 
 # Make the ISO
